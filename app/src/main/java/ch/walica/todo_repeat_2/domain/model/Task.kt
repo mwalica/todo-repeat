@@ -20,6 +20,9 @@ data class Task(
     @ColumnInfo(name = "active")
     val active: Boolean = true,
 
+    @ColumnInfo(name = "archived")
+    val archived: Boolean = false,
+
     @ColumnInfo(name = "selected")
     val selected: Boolean = false,
 

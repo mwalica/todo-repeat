@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBar
@@ -16,7 +17,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -24,18 +24,21 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import ch.walica.todo_repeat_2.presentation.BottomTab
 import ch.walica.todo_repeat_2.presentation.Route
+import ch.walica.todo_repeat_2.presentation.tasklist.TaskListScreen
 import kotlinx.coroutines.flow.map
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen() {
+fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
+
+    val state = mainViewModel.state.collectAsState().value
 
     val navController = rememberNavController()
     val bottomTabs = listOf(BottomTab.Tasks, BottomTab.Delay, BottomTab.Archive)
@@ -59,13 +62,20 @@ fun MainScreen() {
                 title = { Text(text = currentRoute.value) },
                 actions = {
                     if (currentRoute.value == "Tasks") {
-                        IconButton(onClick = { }) {
+                        IconButton(onClick = {
+                            mainViewModel.onEvent(MainEvent.ShowDialog)
+                        }) {
                             Icon(imageVector = Icons.Default.Add, contentDescription = "add task")
                         }
                     }
 
                 }
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = { /*TODO*/ }) {
+                Icon(imageVector = Icons.Default.Add, contentDescription = "Add task")
+            }
         },
         bottomBar = {
             BottomAppBar {
@@ -102,13 +112,23 @@ fun MainScreen() {
             }
         }
     ) { padding ->
-        MainScreenContent(padding = padding, navController = navController)
+        MainScreenContent(
+            padding = padding,
+            navController = navController,
+            mainState = state,
+            mainViewModel = mainViewModel
+        )
     }
 }
 
 
 @Composable
-fun MainScreenContent(padding: PaddingValues, navController: NavHostController) {
+fun MainScreenContent(
+    padding: PaddingValues,
+    navController: NavHostController,
+    mainState: MainState,
+    mainViewModel: MainViewModel
+) {
 
     Surface(
         modifier = Modifier
@@ -117,9 +137,9 @@ fun MainScreenContent(padding: PaddingValues, navController: NavHostController) 
     ) {
         NavHost(navController = navController, startDestination = Route.Tasks.routeName) {
             composable(route = Route.Tasks.routeName) {
-                Column(modifier = Modifier.fillMaxSize()) {
-                    Text(text = "Hello 1")
-                }
+                TaskListScreen(
+                    mainState = mainState,
+                    hideDialog = { mainViewModel.onEvent(MainEvent.HideDialog) })
             }
 
             composable(route = Route.Delay.routeName) {

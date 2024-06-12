@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TaskListViewModel @Inject constructor(
     private val upsertTaskUseCase: UpsertTaskUseCase,
-    private val getActiveTasksUseCase: GetActiveTasksUseCase
+    getActiveTasksUseCase: GetActiveTasksUseCase
 ) : ViewModel() {
 
     private val _tasks = getActiveTasksUseCase().stateIn(
@@ -60,6 +60,14 @@ class TaskListViewModel @Inject constructor(
                     upsertTaskUseCase(task = task)
                 }
             }
+
+            is TaskListEvent.UpdateTask -> {
+                val task = event.task
+                viewModelScope.launch {
+                    upsertTaskUseCase(task = task)
+                }
+            }
+
         }
     }
 
@@ -75,4 +83,5 @@ data class TaskListState(
 sealed interface TaskListEvent {
     data class SetTask(val task: String) : TaskListEvent
     data object SaveTask : TaskListEvent
+    data class UpdateTask(val task: Task) : TaskListEvent
 }

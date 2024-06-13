@@ -17,4 +17,7 @@ interface TaskDao {
 
     @Query("SELECT * FROM tasks WHERE active = 1 ORDER BY date DESC ")
     fun getActiveTasks(): Flow<List<Task>>
+
+    @Query("SELECT * FROM tasks WHERE active = 0 AND archived = 0 ORDER BY date DESC ")
+    fun getDelayedTasks(): Flow<List<Task>>
 }

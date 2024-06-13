@@ -31,6 +31,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import ch.walica.todo_repeat_2.presentation.BottomTab
 import ch.walica.todo_repeat_2.presentation.Route
+import ch.walica.todo_repeat_2.presentation.delaylist.DelayListScreen
 import ch.walica.todo_repeat_2.presentation.tasklist.TaskListScreen
 import kotlinx.coroutines.flow.map
 
@@ -143,9 +144,7 @@ fun MainScreenContent(
             }
 
             composable(route = Route.Delay.routeName) {
-                Column(modifier = Modifier.fillMaxSize()) {
-                    Text(text = "Hello 2")
-                }
+                DelayListScreen()
             }
 
             composable(route = Route.Archive.routeName) {

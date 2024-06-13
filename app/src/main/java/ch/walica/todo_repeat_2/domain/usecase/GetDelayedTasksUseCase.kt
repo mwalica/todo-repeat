@@ -5,7 +5,7 @@ import ch.walica.todo_repeat_2.domain.model.Task
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetDelayedUseCase @Inject constructor(private val taskDao: TaskDao) {
+class GetDelayedTasksUseCase @Inject constructor(private val taskDao: TaskDao) {
 
     operator fun invoke(): Flow<List<Task>> {
         return taskDao.getDelayedTasks()

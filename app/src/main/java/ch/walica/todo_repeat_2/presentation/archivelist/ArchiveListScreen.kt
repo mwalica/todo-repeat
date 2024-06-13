@@ -1,4 +1,4 @@
-package ch.walica.todo_repeat_2.presentation.delaylist
+package ch.walica.todo_repeat_2.presentation.archivelist
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -7,7 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.Remove
+import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -20,14 +20,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
+import ch.walica.todo_repeat_2.presentation.delaylist.DelayedListEvent
 import java.time.ZonedDateTime
 
-
 @Composable
-fun DelayListScreen(delayListViewModel: DelayListViewModel = hiltViewModel()) {
+fun ArchiveListScreen(archiveListViewModel: ArchiveListViewModel = hiltViewModel()) {
 
-    val delayListState =
-        delayListViewModel.state.collectAsState(initial = DelayedListState()).value
+    val archivedListState =
+        archiveListViewModel.state.collectAsState(initial = ArchivedListState()).value
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(text = "Skills to exercise")
@@ -39,17 +39,18 @@ fun DelayListScreen(delayListViewModel: DelayListViewModel = hiltViewModel()) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 itemsIndexed(
-                    items = delayListState.tasks,
+                    items = archivedListState.tasks,
                     key = { _, task -> task.id }) { index, task ->
                     ListItem(
                         headlineContent = { Text(text = task.title) },
                         trailingContent = {
                             Row {
                                 IconButton(onClick = {
-                                    delayListViewModel.onEvent(
-                                        DelayedListEvent.UpdateTask(
+                                    archiveListViewModel.onEvent(
+                                        ArchivedListEvent.UpdateTask(
                                             task.copy(
                                                 active = true,
+                                                archived = false,
                                                 date = ZonedDateTime.now().toEpochSecond()
                                             )
                                         )
@@ -60,19 +61,15 @@ fun DelayListScreen(delayListViewModel: DelayListViewModel = hiltViewModel()) {
                                         contentDescription = "To Active tasks"
                                     )
                                 }
+
                                 IconButton(onClick = {
-                                    delayListViewModel.onEvent(
-                                        DelayedListEvent.UpdateTask(
-                                            task.copy(
-                                                active = false,
-                                                archived = true
-                                            )
-                                        )
+                                    archiveListViewModel.onEvent(
+                                        ArchivedListEvent.DeleteTask(task)
                                     )
                                 }) {
                                     Icon(
-                                        imageVector = Icons.Rounded.Remove,
-                                        contentDescription = "To Archive tasks"
+                                        imageVector = Icons.Rounded.Delete,
+                                        contentDescription = "Delete"
                                     )
                                 }
                             }
@@ -82,7 +79,7 @@ fun DelayListScreen(delayListViewModel: DelayListViewModel = hiltViewModel()) {
                             containerColor = Color.Transparent
                         )
                     )
-                    if (index != delayListState.tasks.size - 1) {
+                    if (index != archivedListState.tasks.size - 1) {
                         Divider()
                     }
                 }

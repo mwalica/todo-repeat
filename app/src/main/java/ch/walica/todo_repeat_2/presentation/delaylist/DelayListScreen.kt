@@ -1,5 +1,6 @@
 package ch.walica.todo_repeat_2.presentation.delaylist
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,10 +17,14 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import ch.walica.todo_repeat_2.R
+import ch.walica.todo_repeat_2.presentation.common.components.DescScreenText
 import java.time.ZonedDateTime
 
 
@@ -29,8 +34,9 @@ fun DelayListScreen(delayListViewModel: DelayListViewModel = hiltViewModel()) {
     val delayListState =
         delayListViewModel.state.collectAsState(initial = DelayedListState()).value
 
+
     Column(modifier = Modifier.fillMaxWidth()) {
-        Text(text = "Skills to exercise")
+        DescScreenText(text = stringResource(id = R.string.desc_delay_screen))
         Card(
             modifier = Modifier
                 .fillMaxWidth()

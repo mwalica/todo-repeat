@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">todo_repeat_2</string>
     <string name="add_task">Add task</string>
+    <string name="desc_tasks_screen">Skills to exercise</string>
+    <string name="desc_delay_screen">Delayed skills</string>
+    <string name="desc_archive_screen">Archived skills</string>
 </resources>

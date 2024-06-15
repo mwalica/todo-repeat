@@ -1,5 +1,6 @@
 package ch.walica.todo_repeat_2.presentation.delaylist
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.walica.todo_repeat_2.domain.model.Task
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,7 +35,7 @@ class DelayListViewModel @Inject constructor(
     }
 
     fun onEvent(event: DelayedListEvent) {
-        when(event) {
+        when (event) {
             is DelayedListEvent.UpdateTask -> {
                 viewModelScope.launch {
                     val task = event.task

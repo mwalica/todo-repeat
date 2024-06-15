@@ -19,8 +19,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import ch.walica.todo_repeat_2.presentation.delaylist.DelayedListEvent
+import ch.walica.todo_repeat_2.R
+import ch.walica.todo_repeat_2.presentation.common.components.DescScreenText
 import java.time.ZonedDateTime
 
 @Composable
@@ -30,7 +32,7 @@ fun ArchiveListScreen(archiveListViewModel: ArchiveListViewModel = hiltViewModel
         archiveListViewModel.state.collectAsState(initial = ArchivedListState()).value
 
     Column(modifier = Modifier.fillMaxWidth()) {
-        Text(text = "Skills to exercise")
+        DescScreenText(text = stringResource(id = R.string.desc_archive_screen))
         Card(
             modifier = Modifier
                 .fillMaxWidth()

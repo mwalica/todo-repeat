@@ -1,5 +1,6 @@
 package ch.walica.todo_repeat_2.presentation.tasklist
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -24,9 +26,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.walica.todo_repeat_2.R
+import ch.walica.todo_repeat_2.presentation.common.components.DescScreenText
 import ch.walica.todo_repeat_2.presentation.main.MainState
+import java.time.Instant
+import java.time.ZoneId
 import java.time.ZonedDateTime
 
 @Composable
@@ -38,8 +46,24 @@ fun TaskListScreen(
 
     val taskListState = taskListViewModel.state.collectAsState(TaskListState()).value
 
+    val dayOfYear = ZonedDateTime.now().dayOfYear
+    taskListState.tasks.filter { task ->
+        task.selected && ZonedDateTime.ofInstant(
+            Instant.ofEpochSecond(task.date),
+            ZoneId.systemDefault()
+        ).dayOfYear != dayOfYear
+    }.forEach { task ->
+        taskListViewModel.onEvent(
+            TaskListEvent.UpdateTask(
+                task.copy(
+                    selected = false
+                )
+            )
+        )
+    }
+
     Column(modifier = Modifier.fillMaxWidth()) {
-        Text(text = "Skills to exercise")
+        DescScreenText(text = stringResource(R.string.desc_tasks_screen))
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -51,7 +75,24 @@ fun TaskListScreen(
                     items = taskListState.tasks,
                     key = { _, task -> task.id }) { index, task ->
                     ListItem(
-                        headlineContent = { Text(text = task.title) },
+                        headlineContent = {
+                            Text(
+                                text = task.title,
+                                modifier = Modifier.clickable {
+                                    taskListViewModel.onEvent(
+                                        TaskListEvent.UpdateTask(
+                                            task.copy(
+                                                date = ZonedDateTime.now().toEpochSecond(),
+                                                selected = !task.selected
+                                            )
+                                        )
+                                    )
+                                },
+                                style = TextStyle(
+                                    fontWeight = if (task.selected) FontWeight.SemiBold else FontWeight.Normal
+                                )
+                            )
+                        },
                         trailingContent = {
                             IconButton(onClick = {
                                 taskListViewModel.onEvent(

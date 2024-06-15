@@ -1,5 +1,6 @@
 package ch.walica.todo_repeat_2.presentation.main
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,6 +18,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -24,6 +26,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -34,6 +37,7 @@ import ch.walica.todo_repeat_2.presentation.Route
 import ch.walica.todo_repeat_2.presentation.archivelist.ArchiveListScreen
 import ch.walica.todo_repeat_2.presentation.delaylist.DelayListScreen
 import ch.walica.todo_repeat_2.presentation.tasklist.TaskListScreen
+import ch.walica.todo_repeat_2.presentation.ui.theme.Primary
 import kotlinx.coroutines.flow.map
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -71,13 +75,23 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
                         }
                     }
 
+                },
+                colors = if(isSystemInDarkTheme()) {
+                    TopAppBarDefaults.topAppBarColors(
+                        containerColor = Primary,
+                        titleContentColor = Color.White,
+                        actionIconContentColor = Color.White
+
+                    )
+                } else {
+                    TopAppBarDefaults.topAppBarColors(
+                        containerColor = Primary,
+                        titleContentColor = Color.White,
+                        actionIconContentColor = Color.White
+
+                    )
                 }
             )
-        },
-        floatingActionButton = {
-            FloatingActionButton(onClick = { /*TODO*/ }) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Add task")
-            }
         },
         bottomBar = {
             BottomAppBar {

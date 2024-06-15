@@ -18,11 +18,11 @@ interface TaskDao {
     @Delete
     suspend fun deleteTask(task: Task)
 
-    @Query("SELECT * FROM tasks WHERE active = 1 ORDER BY date DESC ")
-    fun getActiveTasks(): Flow<List<Task>>
+    @Query("SELECT * FROM tasks WHERE active = 1 OR (archived = 0 AND date < :date) ORDER BY date DESC ")
+    fun getActiveTasks(date: Long): Flow<List<Task>>
 
-    @Query("SELECT * FROM tasks WHERE active = 0 AND archived = 0 ORDER BY date DESC ")
-    fun getDelayedTasks(): Flow<List<Task>>
+    @Query("SELECT * FROM tasks WHERE active = 0 AND archived = 0 AND date >= :date ORDER BY date DESC ")
+    fun getDelayedTasks(date: Long): Flow<List<Task>>
 
     @Query("SELECT * FROM tasks WHERE active = 0 AND archived = 1 ORDER BY date DESC ")
     fun getArchivedTasks(): Flow<List<Task>>

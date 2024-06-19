@@ -19,13 +19,22 @@ import androidx.core.view.WindowCompat
 private val DarkColorScheme = darkColorScheme(
     primary = Primary,
     secondary = PurpleGrey80,
-    tertiary = Pink80,
+    tertiary = TertiaryDark,
+    onSurface = LightGray,
+    surfaceVariant = SurfaceVariantDark,
+    onSurfaceVariant = SurfaceVariantLight,
+    secondaryContainer = Primary,
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = Primary,
     secondary = PurpleGrey40,
-    tertiary = Pink40,
+    tertiary = Tertiary,
+    onSurface = DarkGray,
+    surfaceVariant = SurfaceVariantLight,
+    onSurfaceVariant = DarkGray,
+    outlineVariant = LightGray,
+    secondaryContainer = Color.White,
 
 
     /* Other default colors to override
@@ -59,7 +68,23 @@ fun Todo_repeat_2Theme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = Typography.copy(
+            displayLarge = MaterialTheme.typography.displayLarge.copy(fontFamily = fontFamily),
+            displayMedium = MaterialTheme.typography.displayMedium.copy(fontFamily = fontFamily),
+            displaySmall = MaterialTheme.typography.displaySmall.copy(fontFamily = fontFamily),
+            headlineLarge = MaterialTheme.typography.headlineLarge.copy(fontFamily = fontFamily),
+            headlineMedium = MaterialTheme.typography.headlineMedium.copy(fontFamily = fontFamily),
+            headlineSmall = MaterialTheme.typography.headlineSmall.copy(fontFamily = fontFamily),
+            titleLarge = MaterialTheme.typography.titleLarge.copy(fontFamily = fontFamily),
+            titleMedium = MaterialTheme.typography.titleMedium.copy(fontFamily = fontFamily),
+            titleSmall = MaterialTheme.typography.titleSmall.copy(fontFamily = fontFamily),
+            bodyLarge = MaterialTheme.typography.bodyLarge.copy(fontFamily = fontFamily),
+            bodyMedium = MaterialTheme.typography.bodyMedium.copy(fontFamily = fontFamily),
+            bodySmall = MaterialTheme.typography.bodySmall.copy(fontFamily = fontFamily),
+            labelLarge = MaterialTheme.typography.labelLarge.copy(fontFamily = fontFamily),
+            labelMedium = MaterialTheme.typography.labelMedium.copy(fontFamily = fontFamily),
+            labelSmall = MaterialTheme.typography.labelSmall.copy(fontFamily = fontFamily),
+        ),
         content = content
     )
 }

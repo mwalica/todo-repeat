@@ -1,6 +1,7 @@
 package ch.walica.todo_repeat_2.presentation.tasklist
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,7 +9,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowForwardIos
+import androidx.compose.material.icons.rounded.ArrowForwardIos
+import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material.icons.rounded.Remove
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
@@ -33,6 +38,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import ch.walica.todo_repeat_2.R
 import ch.walica.todo_repeat_2.presentation.common.components.DescScreenText
 import ch.walica.todo_repeat_2.presentation.main.MainState
+import ch.walica.todo_repeat_2.presentation.ui.theme.DarkGray
+import ch.walica.todo_repeat_2.presentation.ui.theme.LightGray
+import ch.walica.todo_repeat_2.presentation.ui.theme.Primary
+import ch.walica.todo_repeat_2.presentation.ui.theme.SurfaceVariantDark
+import ch.walica.todo_repeat_2.presentation.ui.theme.SurfaceVariantLight
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -66,10 +76,12 @@ fun TaskListScreen(
         DescScreenText(text = stringResource(R.string.desc_tasks_screen))
         Card(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            shape = RoundedCornerShape(24.dp)
         ) {
             LazyColumn(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
             ) {
                 itemsIndexed(
                     items = taskListState.tasks,
@@ -78,19 +90,34 @@ fun TaskListScreen(
                         headlineContent = {
                             Text(
                                 text = task.title,
-                                modifier = Modifier.clickable {
-                                    taskListViewModel.onEvent(
-                                        TaskListEvent.UpdateTask(
-                                            task.copy(
-                                                date = ZonedDateTime.now().toEpochSecond(),
-                                                selected = !task.selected
+                                modifier = Modifier
+                                    .padding(horizontal = 8.dp)
+                                    .clickable {
+                                        taskListViewModel.onEvent(
+                                            TaskListEvent.UpdateTask(
+                                                task.copy(
+                                                    date = ZonedDateTime
+                                                        .now()
+                                                        .toEpochSecond(),
+                                                    selected = !task.selected,
+                                                    active = true
+                                                )
                                             )
                                         )
+                                    },
+                                style = if (isSystemInDarkTheme()) {
+                                    MaterialTheme.typography.titleMedium.copy(
+                                        fontWeight = if (task.selected) FontWeight.Bold else FontWeight.Normal,
+                                        color = if (task.selected) MaterialTheme.colorScheme.tertiary else SurfaceVariantLight
+
                                     )
-                                },
-                                style = TextStyle(
-                                    fontWeight = if (task.selected) FontWeight.SemiBold else FontWeight.Normal
-                                )
+                                } else {
+                                    MaterialTheme.typography.titleMedium.copy(
+                                        fontWeight = if (task.selected) FontWeight.Bold else FontWeight.Normal,
+                                        color = if (task.selected) MaterialTheme.colorScheme.tertiary else DarkGray
+
+                                    )
+                                }
                             )
                         },
                         trailingContent = {
@@ -100,14 +127,15 @@ fun TaskListScreen(
                                         task.copy(
                                             active = false,
                                             firstTime = false,
+                                            selected = false,
                                             date = ZonedDateTime.now().toEpochSecond()
                                         )
                                     )
                                 )
                             }) {
                                 Icon(
-                                    imageVector = Icons.Rounded.Remove,
-                                    contentDescription = "To archive"
+                                    imageVector = Icons.Rounded.ChevronRight,
+                                    contentDescription = "To delayed"
                                 )
                             }
                         },
@@ -116,7 +144,9 @@ fun TaskListScreen(
                         )
                     )
                     if (index != taskListState.tasks.size - 1) {
-                        Divider()
+                        Divider(
+                            modifier = Modifier.padding(horizontal = 16.dp)
+                        )
                     }
                 }
             }

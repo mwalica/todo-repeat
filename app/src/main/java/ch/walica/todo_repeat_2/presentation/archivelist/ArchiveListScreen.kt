@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.KeyboardDoubleArrowLeft
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -59,7 +60,7 @@ fun ArchiveListScreen(archiveListViewModel: ArchiveListViewModel = hiltViewModel
                                     )
                                 }) {
                                     Icon(
-                                        imageVector = Icons.Rounded.Add,
+                                        imageVector = Icons.Rounded.KeyboardDoubleArrowLeft,
                                         contentDescription = "To Active tasks"
                                     )
                                 }

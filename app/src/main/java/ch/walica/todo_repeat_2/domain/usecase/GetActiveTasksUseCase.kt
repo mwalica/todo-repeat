@@ -10,7 +10,7 @@ class GetActiveTasksUseCase @Inject constructor(private val taskDao: TaskDao) {
 
     operator fun invoke(): Flow<List<Task>> {
         return taskDao.getActiveTasks(
-            date = ZonedDateTime.now().toEpochSecond() - (60 * 60)
+            date = ZonedDateTime.now().toEpochSecond() - (60)
         )
     }
 }

@@ -1,7 +1,10 @@
 package ch.walica.todo_repeat_2.presentation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.FormatListBulleted
+import androidx.compose.material.icons.automirrored.outlined.FormatListBulleted
 import androidx.compose.material.icons.filled.Archive
+import androidx.compose.material.icons.filled.FormatListBulleted
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Task
 import androidx.compose.material.icons.outlined.Archive
@@ -17,8 +20,8 @@ sealed class BottomTab(
 ) {
     data object Tasks : BottomTab(
         title = "Tasks",
-        selectedIcon = Icons.Filled.Task,
-        unselectedIcon = Icons.Outlined.Task,
+        selectedIcon = Icons.AutoMirrored.Filled.FormatListBulleted,
+        unselectedIcon = Icons.AutoMirrored.Outlined.FormatListBulleted,
         route = Route.Tasks
     )
 

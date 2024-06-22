@@ -9,6 +9,6 @@ import javax.inject.Inject
 class GetDelayedTasksUseCase @Inject constructor(private val taskDao: TaskDao) {
 
     operator fun invoke(): Flow<List<Task>> {
-        return taskDao.getDelayedTasks(date = ZonedDateTime.now().toEpochSecond() - (60))
+        return taskDao.getDelayedTasks(date = ZonedDateTime.now().toEpochSecond() - (60*60*24*7))
     }
 }

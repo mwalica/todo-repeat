@@ -17,24 +17,29 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Primary,
-    secondary = PurpleGrey80,
-    tertiary = TertiaryDark,
+    primary = PrimaryDark,
+    secondary = SecondaryLight,
+    tertiary = PrimaryLight,
+    surface = Color.Black,
     onSurface = LightGray,
     surfaceVariant = SurfaceVariantDark,
     onSurfaceVariant = SurfaceVariantLight,
-    secondaryContainer = Primary,
+    secondaryContainer = SecondaryDark,
+    onSecondaryContainer = Color.White.copy(alpha = 0.85f)
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Primary,
-    secondary = PurpleGrey40,
-    tertiary = Tertiary,
+    primary = PrimaryLight,
+    secondary = SecondaryLight,
+    tertiary = PrimaryDark,
+    surface = SurfaceVariantLight,
     onSurface = DarkGray,
-    surfaceVariant = SurfaceVariantLight,
+    surfaceVariant = Color.White,
     onSurfaceVariant = DarkGray,
     outlineVariant = LightGray,
-    secondaryContainer = Color.White,
+//    filled tonal button
+    secondaryContainer = SecondaryLight,
+    onSecondaryContainer = Color.White.copy(alpha = 0.7f)
 
 
     /* Other default colors to override
@@ -61,8 +66,8 @@ fun Todo_repeat_2Theme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            window.statusBarColor = Color.Transparent.toArgb()
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }
 

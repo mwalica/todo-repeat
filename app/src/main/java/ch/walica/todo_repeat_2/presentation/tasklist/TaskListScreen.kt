@@ -16,8 +16,11 @@ import androidx.compose.material.icons.rounded.ArrowForwardIos
 import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material.icons.rounded.Remove
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
@@ -26,6 +29,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -40,7 +44,6 @@ import ch.walica.todo_repeat_2.presentation.common.components.DescScreenText
 import ch.walica.todo_repeat_2.presentation.main.MainState
 import ch.walica.todo_repeat_2.presentation.ui.theme.DarkGray
 import ch.walica.todo_repeat_2.presentation.ui.theme.LightGray
-import ch.walica.todo_repeat_2.presentation.ui.theme.Primary
 import ch.walica.todo_repeat_2.presentation.ui.theme.SurfaceVariantDark
 import ch.walica.todo_repeat_2.presentation.ui.theme.SurfaceVariantLight
 import java.time.Instant
@@ -108,13 +111,13 @@ fun TaskListScreen(
                                 style = if (isSystemInDarkTheme()) {
                                     MaterialTheme.typography.titleMedium.copy(
                                         fontWeight = if (task.selected) FontWeight.Bold else FontWeight.Normal,
-                                        color = if (task.selected) MaterialTheme.colorScheme.tertiary else SurfaceVariantLight
+                                        color = if (task.selected) MaterialTheme.colorScheme.primary else SurfaceVariantLight
 
                                     )
                                 } else {
                                     MaterialTheme.typography.titleMedium.copy(
                                         fontWeight = if (task.selected) FontWeight.Bold else FontWeight.Normal,
-                                        color = if (task.selected) MaterialTheme.colorScheme.tertiary else DarkGray
+                                        color = if (task.selected) MaterialTheme.colorScheme.primary else DarkGray
 
                                     )
                                 }
@@ -140,7 +143,8 @@ fun TaskListScreen(
                             }
                         },
                         colors = ListItemDefaults.colors(
-                            containerColor = Color.Transparent
+                            containerColor = Color.Transparent,
+                            trailingIconColor = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     )
                     if (index != taskListState.tasks.size - 1) {
@@ -157,9 +161,10 @@ fun TaskListScreen(
 
     if (mainState.isShow) {
         AlertDialog(
+            containerColor = if (isSystemInDarkTheme()) SurfaceVariantDark else LightGray,
             onDismissRequest = hideDialog,
             confirmButton = {
-                OutlinedButton(onClick = {
+                FilledTonalButton(onClick = {
                     taskListViewModel.onEvent(TaskListEvent.SaveTask)
                     hideDialog()
                 }) {
@@ -167,7 +172,17 @@ fun TaskListScreen(
                 }
             },
             dismissButton = {
-                OutlinedButton(onClick = hideDialog) {
+                FilledTonalButton(
+                    onClick = hideDialog,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(
+                            alpha = 0.7f
+                        ),
+                        contentColor = Color.White.copy(
+                            alpha = if(isSystemInDarkTheme()) 0.5f else 0.9f
+                        )
+                    )
+                ) {
                     Text(text = "Cancel")
                 }
             },
@@ -177,6 +192,10 @@ fun TaskListScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     TextField(
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent
+                        ),
                         value = taskListState.title,
                         onValueChange = { taskListViewModel.onEvent(TaskListEvent.SetTask(it)) },
                         modifier = Modifier.weight(1f),

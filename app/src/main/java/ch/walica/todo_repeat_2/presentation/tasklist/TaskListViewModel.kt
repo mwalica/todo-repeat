@@ -58,6 +58,12 @@ class TaskListViewModel @Inject constructor(
                 viewModelScope.launch {
                     upsertTaskUseCase(task = task)
                 }
+
+                _state.update {state ->
+                    state.copy(
+                        title = ""
+                    )
+                }
             }
 
             is TaskListEvent.UpdateTask -> {

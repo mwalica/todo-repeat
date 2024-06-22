@@ -28,6 +28,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -40,11 +41,10 @@ import ch.walica.todo_repeat_2.presentation.Route
 import ch.walica.todo_repeat_2.presentation.archivelist.ArchiveListScreen
 import ch.walica.todo_repeat_2.presentation.delaylist.DelayListScreen
 import ch.walica.todo_repeat_2.presentation.tasklist.TaskListScreen
+import ch.walica.todo_repeat_2.presentation.ui.theme.DarkGray
 import ch.walica.todo_repeat_2.presentation.ui.theme.LightGray
-import ch.walica.todo_repeat_2.presentation.ui.theme.Primary
 import ch.walica.todo_repeat_2.presentation.ui.theme.SurfaceVariantDark
 import ch.walica.todo_repeat_2.presentation.ui.theme.SurfaceVariantLight
-import ch.walica.todo_repeat_2.presentation.ui.theme.White10
 import kotlinx.coroutines.flow.map
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -70,6 +70,7 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
     }
 
     Scaffold(
+        containerColor = MaterialTheme.colorScheme.surface,
         topBar = {
             TopAppBar(
                 title = {
@@ -90,9 +91,8 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
                 },
                 colors =
                 TopAppBarDefaults.topAppBarColors(
-                    containerColor = Primary.copy(),
-                    titleContentColor = Color.White.copy(alpha = 0.7f),
-                    actionIconContentColor = Color.White.copy(alpha = 0.7f)
+                    titleContentColor = MaterialTheme.colorScheme.primary,
+                    actionIconContentColor = MaterialTheme.colorScheme.primary
                 )
             )
         },
@@ -106,11 +106,11 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
                     bottomTabs.forEachIndexed { i, bottomTab ->
                         NavigationBarItem(
                             colors = NavigationBarItemDefaults.colors(
-                                indicatorColor = if (isSystemInDarkTheme()) {
-                                    SurfaceVariantDark
-                                } else {
-                                    SurfaceVariantLight
-                                }
+                                indicatorColor = MaterialTheme.colorScheme.surface,
+                                selectedIconColor = MaterialTheme.colorScheme.primary,
+                                unselectedIconColor = SurfaceVariantDark,
+                                selectedTextColor = MaterialTheme.colorScheme.primary,
+                                unselectedTextColor = SurfaceVariantDark,
                             ),
                             selected = index == i,
                             onClick = {
@@ -165,7 +165,8 @@ fun MainScreenContent(
     Surface(
         modifier = Modifier
             .fillMaxSize()
-            .padding(padding)
+            .padding(bottom = padding.calculateBottomPadding())
+            .padding(top = padding.calculateTopPadding())
     ) {
         NavHost(navController = navController, startDestination = Route.Tasks.routeName) {
             composable(route = Route.Tasks.routeName) {

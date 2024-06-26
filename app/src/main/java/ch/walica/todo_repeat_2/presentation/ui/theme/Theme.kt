@@ -18,9 +18,9 @@ import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
     primary = PrimaryDark,
-    secondary = SecondaryLight,
+    secondary = SecondaryDark,
     tertiary = PrimaryLight,
-    surface = Color.Black,
+    surface = Black10,
     onSurface = LightGray,
     surfaceVariant = SurfaceVariantDark,
     onSurfaceVariant = SurfaceVariantLight,
@@ -67,7 +67,9 @@ fun Todo_repeat_2Theme(
         SideEffect {
             val window = (view.context as Activity).window
             window.statusBarColor = Color.Transparent.toArgb()
+            window.navigationBarColor = Color.Transparent.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
+            WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = !darkTheme
         }
     }
 

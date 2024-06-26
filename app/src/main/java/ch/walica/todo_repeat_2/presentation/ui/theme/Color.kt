@@ -23,3 +23,4 @@ val LightGray = Color(0xFFDFDFDF)
 val DarkGray = Color(0xFF383A3F)
 
 val White10 = Color.hsl(240f, 0f, 1f)
+val Black10 = Color.hsl(240f, 0.1f, 0.09f)

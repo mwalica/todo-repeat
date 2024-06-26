@@ -1,5 +1,6 @@
 package ch.walica.todo_repeat_2.presentation.tasklist
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
@@ -44,6 +45,7 @@ import ch.walica.todo_repeat_2.presentation.common.components.DescScreenText
 import ch.walica.todo_repeat_2.presentation.main.MainState
 import ch.walica.todo_repeat_2.presentation.ui.theme.DarkGray
 import ch.walica.todo_repeat_2.presentation.ui.theme.LightGray
+import ch.walica.todo_repeat_2.presentation.ui.theme.PurpleGrey40
 import ch.walica.todo_repeat_2.presentation.ui.theme.SurfaceVariantDark
 import ch.walica.todo_repeat_2.presentation.ui.theme.SurfaceVariantLight
 import java.time.Instant
@@ -164,7 +166,7 @@ fun TaskListScreen(
             containerColor = if (isSystemInDarkTheme()) SurfaceVariantDark else LightGray,
             onDismissRequest = hideDialog,
             confirmButton = {
-                FilledTonalButton(onClick = {
+                Button(onClick = {
                     taskListViewModel.onEvent(TaskListEvent.SaveTask)
                     hideDialog()
                 }) {
@@ -172,16 +174,9 @@ fun TaskListScreen(
                 }
             },
             dismissButton = {
-                FilledTonalButton(
+                OutlinedButton(
                     onClick = hideDialog,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(
-                            alpha = 0.7f
-                        ),
-                        contentColor = Color.White.copy(
-                            alpha = if(isSystemInDarkTheme()) 0.5f else 0.9f
-                        )
-                    )
+
                 ) {
                     Text(text = "Cancel")
                 }

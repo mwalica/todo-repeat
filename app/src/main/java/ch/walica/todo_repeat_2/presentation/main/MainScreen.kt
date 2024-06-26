@@ -1,11 +1,14 @@
 package ch.walica.todo_repeat_2.presentation.main
 
+import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -30,6 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -52,6 +56,7 @@ import kotlinx.coroutines.flow.map
 fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
 
     val state = mainViewModel.state.collectAsState().value
+    val activity = LocalContext.current as Activity
 
     val navController = rememberNavController()
     val bottomTabs = listOf(BottomTab.Tasks, BottomTab.Delay, BottomTab.Archive)
@@ -87,6 +92,14 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
                             Icon(imageVector = Icons.Default.Add, contentDescription = "add task")
                         }
                     }
+                    IconButton(onClick = {
+                        activity.finish()
+                    }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ExitToApp,
+                            contentDescription = "exit"
+                        )
+                    }
 
                 },
                 colors =
@@ -108,9 +121,13 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
                             colors = NavigationBarItemDefaults.colors(
                                 indicatorColor = MaterialTheme.colorScheme.surface,
                                 selectedIconColor = MaterialTheme.colorScheme.primary,
-                                unselectedIconColor = SurfaceVariantDark,
+                                unselectedIconColor = if (isSystemInDarkTheme()) SurfaceVariantLight.copy(
+                                    alpha = 0.8f
+                                ) else SurfaceVariantDark,
                                 selectedTextColor = MaterialTheme.colorScheme.primary,
-                                unselectedTextColor = SurfaceVariantDark,
+                                unselectedTextColor = if (isSystemInDarkTheme()) SurfaceVariantLight.copy(
+                                    alpha = 0.8f
+                                ) else SurfaceVariantDark
                             ),
                             selected = index == i,
                             onClick = {

@@ -3,8 +3,10 @@ package ch.walica.todo_repeat_2.presentation.tasklist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.walica.todo_repeat_2.domain.model.Task
+import ch.walica.todo_repeat_2.domain.usecase.DeleteTaskUseCase
 import ch.walica.todo_repeat_2.domain.usecase.GetActiveTasksUseCase
 import ch.walica.todo_repeat_2.domain.usecase.UpsertTaskUseCase
+import ch.walica.todo_repeat_2.presentation.archivelist.ArchivedListEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class TaskListViewModel @Inject constructor(
     private val upsertTaskUseCase: UpsertTaskUseCase,
-    getActiveTasksUseCase: GetActiveTasksUseCase
+    getActiveTasksUseCase: GetActiveTasksUseCase,
+    private val deleteTaskUseCase: DeleteTaskUseCase
 ) : ViewModel() {
 
     private val _tasks = getActiveTasksUseCase().stateIn(
@@ -59,7 +62,7 @@ class TaskListViewModel @Inject constructor(
                     upsertTaskUseCase(task = task)
                 }
 
-                _state.update {state ->
+                _state.update { state ->
                     state.copy(
                         title = ""
                     )
@@ -70,6 +73,12 @@ class TaskListViewModel @Inject constructor(
                 val task = event.task
                 viewModelScope.launch {
                     upsertTaskUseCase(task = task)
+                }
+            }
+
+            is TaskListEvent.DeleteTask -> {
+                viewModelScope.launch {
+                    deleteTaskUseCase(task = event.task)
                 }
             }
 
@@ -89,4 +98,5 @@ sealed interface TaskListEvent {
     data class SetTask(val task: String) : TaskListEvent
     data object SaveTask : TaskListEvent
     data class UpdateTask(val task: Task) : TaskListEvent
+    data class DeleteTask(val task: Task) : TaskListEvent
 }

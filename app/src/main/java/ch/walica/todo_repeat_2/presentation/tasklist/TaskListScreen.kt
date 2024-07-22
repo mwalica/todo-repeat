@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowForwardIos
 import androidx.compose.material.icons.rounded.ArrowForwardIos
 import androidx.compose.material.icons.rounded.ChevronRight
+import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Remove
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -125,6 +126,19 @@ fun TaskListScreen(
                                 }
                             )
                         },
+                        leadingContent = {
+                            IconButton(onClick = {
+                                taskListViewModel.onEvent(
+                                    TaskListEvent.DeleteTask(task)
+                                )
+
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Rounded.Delete,
+                                    contentDescription = "Delete"
+                                )
+                            }
+                        },
                         trailingContent = {
                             IconButton(onClick = {
                                 taskListViewModel.onEvent(
@@ -143,6 +157,8 @@ fun TaskListScreen(
                                     contentDescription = "To delayed"
                                 )
                             }
+
+
                         },
                         colors = ListItemDefaults.colors(
                             containerColor = Color.Transparent,
@@ -177,7 +193,7 @@ fun TaskListScreen(
                 OutlinedButton(
                     onClick = hideDialog,
 
-                ) {
+                    ) {
                     Text(text = "Cancel")
                 }
             },

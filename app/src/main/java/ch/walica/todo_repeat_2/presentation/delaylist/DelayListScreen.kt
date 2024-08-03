@@ -1,6 +1,7 @@
 package ch.walica.todo_repeat_2.presentation.delaylist
 
 import android.util.Log
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,6 +35,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.walica.todo_repeat_2.R
 import ch.walica.todo_repeat_2.presentation.common.components.DescScreenText
+import ch.walica.todo_repeat_2.presentation.ui.theme.DarkGray
+import ch.walica.todo_repeat_2.presentation.ui.theme.SurfaceVariantLight
 import java.time.ZonedDateTime
 
 
@@ -61,7 +64,8 @@ fun DelayListScreen(delayListViewModel: DelayListViewModel = hiltViewModel()) {
                             Text(
                                 text = task.title,
                                 style = MaterialTheme.typography.titleMedium.copy(
-                                    fontWeight = FontWeight.Normal
+                                    fontWeight = FontWeight.Normal,
+                                    color = if (isSystemInDarkTheme()) SurfaceVariantLight else DarkGray
                                 )
                             )
                         },

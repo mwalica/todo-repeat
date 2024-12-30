@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import ch.walica.todo_repeat_2.presentation.main.MainScreen
 import ch.walica.todo_repeat_2.presentation.ui.theme.Todo_repeat_2Theme
 import dagger.hilt.android.AndroidEntryPoint
@@ -13,6 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.light(
                 Color.TRANSPARENT, Color.TRANSPARENT
@@ -22,6 +24,10 @@ class MainActivity : ComponentActivity() {
             )
         )
         super.onCreate(savedInstanceState)
+        actionBar?.hide();
+
+        installSplashScreen()
+
         setContent {
             Todo_repeat_2Theme {
                 MainScreen()

@@ -84,4 +84,7 @@ dependencies {
     implementation(libs.room)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
+
+    //spashscreen
+    implementation(libs.androidx.core.splashscreen)
 }
